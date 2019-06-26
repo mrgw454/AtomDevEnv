@@ -1,0 +1,95 @@
+"*":
+  "atom-shell-commands":
+    commands: [
+      {
+        name: "Build Coco 2 DSK image and launch MAME (DW4)"
+        command: "e:/mame/makeDSK-pyDW.bat"
+        arguments: [
+          "coco2"
+          "y"
+        ]
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-2"
+      }
+      {
+        name: "Build Coco 2 DSK image and launch MAME (local)"
+        command: "e:/mame/makeDSK-pyDW.bat"
+        arguments: [
+          "coco2"
+          "n"
+        ]
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-3"
+      }
+      {
+        name: "Build Coco 3 DSK image and launch MAME (DW4)"
+        command: "e:/mame/makeDSK-pyDW.bat"
+        arguments: [
+          "coco3dw1"
+          "y"
+        ]
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-4"
+      }
+      {
+        name: "Build Coco 3 DSK image and launch MAME (local)"
+        command: "e:/mame/makeDSK-pyDW.bat"
+        arguments: [
+          "coco3"
+          "n"
+        ]
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-5"
+      }
+      {
+        name: "Compile assembly program (lwasm)"
+        command: "c:/Program Files (x86)/lwtools/lwasm.exe"
+        arguments: [
+          "--6809"
+          "--decb"
+          "--output={FileDir}/{FileNameNoExt}.bin"
+          "file:{FileDir}/{FileName}"
+        ]
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-6"
+      }
+      {
+        name: "Compile assembly program (asm6809)"
+        command: "c:/Program Files (x86)/asm6809/asm6809.exe"
+        arguments: [
+          "--coco"
+          "--output={FileDir}/{FileNameNoExt}.bin"
+          "{FileDir}/{FileName}"
+        ]
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-7"
+      }
+      {
+        name: "Compile C program (CMOC)"
+        command: "/usr/bin/cmoc"
+        arguments: [
+          "-o"
+          "{FileDir}/{FileNameNoExt}.bin"
+          "{FileDir}/{FileName}"
+        ]
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-8"
+      }
+      {
+        name: "Extract Coco DSK image (DECB)"
+        command: "e:/mame/extractDSK.bat"
+        arguments: [
+          "{FileName}"
+        ]
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-9"
+      }
+    ]
