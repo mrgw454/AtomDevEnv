@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # script to create a new Coco floppy disk image and and copy all Coco related files to it.
-# It will also (optionally) run MAME mount the disk image (pyDriveWire or normal DECB)
+# It will also (optionally) run MAME mount the disk image (DriveWire or normal DECB)
 
 # this script can take up to 2 command line parameters:
-# Coco driver to use for MAME (i.e. coco2 coco3, etc.) and use pyDriveWire (yes or no)
+# Coco driver to use for MAME (i.e. coco2 coco3, etc.) and use DriveWire (yes or no)
 
 # syntax example:
 
@@ -12,8 +12,8 @@
 
 # this will create a new disk image and copy all Coco compatible files to a disk image
 # using name of the current folder.  In addition, it will launch MAME using the Coco 2
-# driver for MAME (with HDBDOS) and use pyDriveWire with this disk image mounted as DRIVE 0.
-# If pyDriveWire is not running, the script will start it.
+# driver for MAME (with HDBDOS) and use DriveWire with this disk image mounted as DRIVE 0.
+# If DriveWire is not running, the script will start it.
 
 # Define function for displaying error codes from Toolshed's 'decb' command
 
@@ -47,9 +47,6 @@ scriptname=`basename "$0"`
 
 # get name of current folder and place it into a variable
 floppy=`basename "$PWD"`
-
-workdir=$(pwd)
-
 
 # parse command line parameters for standard help options
 
@@ -165,7 +162,7 @@ fi
 
 
 
-# (optional) load MAME and mount disk image in pyDrivewire INSTANCE 0 as DRIVE 0
+# (optional) load MAME and mount disk image in Drivewire INSTANCE 0 as DRIVE 0
 
 if [[ $2 =~ Y|y ]];then
 
@@ -180,66 +177,59 @@ if [[ $2 =~ Y|y ]];then
 	echo -e
 
 
-	# make sure HDBDOS is used for pyDriveWire access
+	# make sure HDBDOS is used for DriveWire access
 
 
 	# Coco 2 section
 
 	if [[ $1 =~ coco2|coco2b|coco2h|coco2bh ]];then
 
-		# start pyDriveWire if it's not running
+		# start DriveWire if it's not running
 
-		ps_out=`ps -ef | grep pyDriveWire | grep -v 'grep' | grep -v $0`
+		ps_out=`ps -ef | grep DW4UI | grep -v 'grep' | grep -v $0`
 		result=$(echo $ps_out | grep "$1")
 		if [[ "$result" != "" ]];then
 
-		echo -e "pyDriveWire is running"
+    		echo -e "DriveWire 4 is running"
 
 		else
 
-		echo -e "pyDriveWire is not running.  Starting pyDriveWire..."
+    		echo -e "DriveWire 4 is not running.  Starting DriveWire..."
+    		echo -e
+			$HOME/DriveWire4/DW4.sh > /dev/null 2>&1 &
+			sleep 4s
 
-		rm /tmp/pyDriveWire.pid
-
-		cd $HOME/pyDriveWire
-		./pyDriveWire --daemon
-
-		sleep 3s
-
-	fi
+		fi
 
 
-		# eject disk from pyDriveWire
-		$HOME/pyDriveWire/pyDwCli http://localhost:6800 dw disk eject 0
+		# eject disk from DriveWire
+		java -jar $HOME/DriveWire4/DW4CLI.jar --instance="0" -command='dw disk eject '"0"
 		echo -e
 
-		# insert disk for pyDriveWire
-		$HOME/pyDriveWire/pyDwCli http://localhost:6800 dw disk insert 0 "$workdir/$floppy.DSK"
+		# insert disk for DriveWire
+		java -jar $HOME/DriveWire4/DW4CLI.jar --instance="0" -command='dw disk insert '"0 $PWD/$floppy.DSK"
 		echo -e
 
-		# show (confirm) disk mounted in pyDriveWire
-		$HOME/pyDriveWire/pyDwCli http://localhost:6800 dw disk show 0
+		# show (confirm) disk mounted in DriveWire
+		java -jar $HOME/DriveWire4/DW4CLI.jar --instance="0" -command='dw disk show '"0"
 		echo -e
 
 
 		mame $1 -homepath $HOME/.mame -cart /media/share1/roms/hdbdw3bck.rom -ext fdcv11 $MAMEPARMS
 
-		# eject disk from pyDriveWire
-		$HOME/pyDriveWire/pyDwCli http://localhost:6800 dw disk eject 0
+		# eject disk from DriveWire
+		java -jar $HOME/DriveWire4/DW4CLI.jar --instance="0" -command='dw disk eject '"0"
 
 		echo -e
 		read -p "Press any key to continue... " -n1 -s
 
-		# stop pyDriveWire
+		# stop DriveWire
 
 		echo -e
-		echo -e "Stopping pyDriveWire..."
+		echo -e "Stopping DriveWire..."
 		echo -e
 
-		cd $HOME/pyDriveWire
-		./pyDriveWire --stop
-		kill $(ps aux | grep 'pyDriveWire' | awk '{print $2}')
-    rm /tmp/pyDriveWire.pid
+		kill $(ps aux | grep 'DW4UI' | awk '{print $2}')
 
 		echo -e
 		echo -e "Done."
@@ -253,64 +243,58 @@ if [[ $2 =~ Y|y ]];then
 
 	if [[ $1 =~ coco3dw1 ]];then
 
-		# start pyDriveWire if it's not running
+		# start DriveWire if it's not running
 
-                ps_out=`ps -ef | grep pyDriveWire | grep -v 'grep' | grep -v $0`
-                result=$(echo $ps_out | grep "$1")
-                if [[ "$result" != "" ]];then
+		ps_out=`ps -ef | grep DW4UI | grep -v 'grep' | grep -v $0`
+		result=$(echo $ps_out | grep "$1")
+		if [[ "$result" != "" ]];then
 
-                echo -e "pyDriveWire is running"
+    		echo -e "DriveWire 4 is running"
 
-                else
+		else
 
-                echo -e "pyDriveWire is not running.  Starting pyDriveWire..."
+    		echo -e "DriveWire 4 is not running.  Starting DriveWire..."
+    		echo -e
+			$HOME/DriveWire4/DW4.sh > /dev/null 2>&1 &
+			sleep 4s
 
-                rm /tmp/pyDriveWire.pid
-
-                cd $HOME/pyDriveWire
-                ./pyDriveWire --daemon
-
-                sleep 3s
-
-	fi
+		fi
 
 
-                # eject disk from pyDriveWire
-                $HOME/pyDriveWire/pyDwCli http://localhost:6800 dw disk eject 0
-                echo -e
+		# eject disk from DriveWire
+		java -jar $HOME/DriveWire4/DW4CLI.jar --instance="0" -command='dw disk eject '"0"
+		echo -e
 
-                # insert disk for pyDriveWire
-                $HOME/pyDriveWire/pyDwCli http://localhost:6800 dw disk insert 0 "$workdir/$floppy.DSK"
-                echo -e
+		# insert disk for DriveWire
+		java -jar $HOME/DriveWire4/DW4CLI.jar --instance="0" -command='dw disk insert '"0 $PWD/$floppy.DSK"
+		echo -e
 
-                # show (confirm) disk mounted in pyDriveWire
-                $HOME/pyDriveWire/pyDwCli http://localhost:6800 dw disk show 0
-                echo -e
+		# show (confirm) disk mounted in DriveWire
+		java -jar $HOME/DriveWire4/DW4CLI.jar --instance="0" -command='dw disk show '"0"
+		echo -e
 
 
-                mame $1 -homepath $HOME/.mame $MAMEPARMS
+		mame $1 -homepath $HOME/.mame $MAMEPARMS
 
-                # eject disk from pyDriveWire
-                $HOME/pyDriveWire/pyDwCli http://localhost:6800 dw disk eject 0
+		# eject disk from DriveWire
+		java -jar $HOME/DriveWire4/DW4CLI.jar --instance="0" -command='dw disk eject '"0"
 
-                echo -e
-                read -p "Press any key to continue... " -n1 -s
+		echo -e
+		read -p "Press any key to continue... " -n1 -s
+		echo -e
 
-                # stop pyDriveWire
+		# stop DriveWire
 
-                echo -e
-                echo -e "Stopping pyDriveWire..."
-                echo -e
+		echo -e
+		echo -e "Stopping DriveWire..."
+		echo -e
 
-                cd $HOME/pyDriveWire
-                ./pyDriveWire --stop
-                kill $(ps aux | grep 'pyDriveWire' | awk '{print $2}')
-                rm /tmp/pyDriveWire.pid
+		kill $(ps aux | grep 'DW4UI' | awk '{print $2}')
 
-                echo -e
-                echo -e "Done."
-                echo -e
-                exit 1
+		echo -e
+		echo -e "Done."
+		echo -e
+		exit 1
 
 	fi
 
