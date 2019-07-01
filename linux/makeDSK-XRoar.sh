@@ -217,7 +217,6 @@ if [[ $2 =~ Y|y ]];then
 		java -jar $HOME/DriveWire4/DW4CLI.jar --instance="0" -command='dw disk eject '"0"
 
 		echo -e
-		read -p "Press any key to continue... " -n1 -s
 
 		# stop DriveWire
 

@@ -228,7 +228,6 @@ if [[ $2 =~ Y|y ]];then
 		$HOME/pyDriveWire/pyDwCli http://localhost:6800 dw disk eject 0
 
 		echo -e
-		read -p "Press any key to continue... " -n1 -s
 
 		# stop pyDriveWire
 
