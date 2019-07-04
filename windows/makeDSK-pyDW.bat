@@ -16,6 +16,9 @@
 :: If pyDriveWire is not running, the script will start it.
 
 
+:: use parameter file for MAME (if found)
+for /f "delims=" %%x in (e:\mame\.optional_mame_parameters.txt) do set MAMEPARMS=%%x
+
 
 :: get name of batch file and place it into a variable
 
@@ -203,7 +206,7 @@ if /I "%2" == "Y" (
 		rem change to mame folder
 		cd e:\mame
 
-		e:\mame\mame.exe %1 -cart e:\media\share1\roms\hdbdw3bck.rom -ext fdcv11 -ui_active -skip_gameinfo
+		e:\mame\mame.exe %1 -cart e:\media\share1\roms\hdbdw3bck.rom -ext fdcv11 %MAMEPARMS%
 
     cd e:\pyDriveWire
 
@@ -214,7 +217,7 @@ if /I "%2" == "Y" (
 		cd "%projectfolder%"
 
 		echo.
-		set /p=Press [ENTER] to continue...
+		rem set /p=Press [ENTER] to continue...
 
 		exit /B
 
@@ -245,7 +248,7 @@ if /I "%2" == "Y" (
 		rem change to mame folder
 		cd e:\mame
 
-		e:\mame\mame.exe %1 -ui_active -skip_gameinfo
+		e:\mame\mame.exe %1 %MAMEPARMS%
 
     cd e:\pyDriveWire
 
@@ -256,7 +259,7 @@ if /I "%2" == "Y" (
 		cd "%projectfoldfer%"
 
 		echo.
-		set /p=Press [ENTER] to continue...
+		rem set /p=Press [ENTER] to continue...
 
 		exit /B
 
@@ -280,7 +283,7 @@ if /I "%2" == "Y" (
 	rem change to mame folder
 	cd e:\mame
 
-	e:\mame\mame.exe %1 -inipath e:\mame -rompath e:\mame\roms;e:\media\share1\roms -flop1 "%cd%\%floppy%.DSK" -ui_active -skip_gameinfo
+	e:\mame\mame.exe %1 -inipath e:\mame -rompath e:\mame\roms;e:\media\share1\roms -flop1 "%cd%\%floppy%.DSK" %MAMEPARMS%
 
 	rem change back to project folder
 	cd "%projectfolder%"

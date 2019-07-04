@@ -1,23 +1,24 @@
 @echo off
 
 :: batch file to create a new Coco floppy disk image and and copy all Coco related files to it.
-:: It will also (optionally) run MAME mount the disk image (DriveWire or normal DECB)
+:: It will also (optionally) run XRoar and mount the disk image (pyDriveWire or normal DECB)
 
 :: this script can take up to 2 command line parameters:
-:: Coco driver to use for MAME (i.e. coco2 coco3, etc.) and use DriveWire (yes or no)
+:: Coco driver to use for XRoar (i.e. coco2 coco2b, etc.) and use pyDriveWire (yes or no)
 
 :: syntax example:
 
 :: makeDSK.bat coco2 y
 
 :: this will create a new disk image and copy all Coco compatible files to a disk image
-:: using name of the current folder.  In addition, it will launch MAME using the Coco 2
-:: driver for MAME (with HDBDOS) and use DriveWire with this disk image mounted as DRIVE 0.
-:: If DriveWire is not running, the script will start it.
+:: using name of the current folder.  In addition, it will launch XRoar using the Coco 2
+:: driver for MAME (with HDBDOS) and use pyDriveWire with this disk image mounted as DRIVE 0.
+:: If pyDriveWire is not running, the script will start it (net start pyDriveWire if configured as a service).
 
 
-:: use parameter file for MAME (if found)
-for /f "delims=" %%x in (e:\mame\.optional_mame_parameters.txt) do set MAMEPARMS=%%x
+:: use parameter file for XRoar (if found)
+for /f "delims=" %%x in (e:\xroar\.optional_xroar_parameters.txt) do set XROARPARMS=%%x
+
 
 :: get name of batch file and place it into a variable
 
@@ -178,87 +179,53 @@ if "%~1"=="" (
 
 )
 
-:: (optional) load MAME and mount disk image in Drivewire INSTANCE 0 as DRIVE 0
+:: (optional) load XRoar and mount disk image in pyDrivewire INSTANCE 0 as DRIVE 0
 
 if /I "%2" == "Y" (
 
-	rem make sure HDBDOS is used for DriveWire access
+	rem make sure HDBDOS is used for pyDriveWire access
 
 	rem Coco 2 section
 
 	if %1 == coco2 (
 
-			:: eject disk from DriveWire
-		java -jar e:\DriveWire4\DW4CLI.jar --instance="0" -command="dw disk eject 0"
+		cd e:\pyDriveWire
+
+			:: eject disk from pyDriveWire
+		pypy ./pyDwCli.py http://localhost:6800 dw disk eject 0
 		echo -e
 
-		:: insert disk for DriveWire
-		java -jar e:\DriveWire4\DW4CLI.jar --instance="0" -command="dw disk insert 0 %cd%\%floppy%.DSK"
+		:: insert disk for pyDriveWire
+		pypy ./pyDwCli.py http://localhost:6800 dw disk insert 0 %cd%\%floppy%.DSK
 		echo -e
 
-		:: show (confirm) disk mounted in DriveWire
-		java -jar e:\DriveWire4\DW4CLI.jar --instance="0" -command="dw disk show 0"
+		:: show (confirm) disk mounted in pyDriveWire
+		pypy ./pyDwCli.py http://localhost:6800 dw disk show 0
 		echo -e
 
-		rem change to mame folder
-		cd e:\mame
+		rem change to XRoar folder
+		cd e:\xroar
 
-		e:\mame\mame.exe %1 -cart e:\media\share1\roms\hdbdw3bck.rom -ext fdcv11 %MAMEPARMS%
+		e:\xroar\xroar.exe -c xroar.conf -default-machine coco2bus -machine-cart hdbdos %XROARPARMS%
+
+    cd e:\pyDriveWire
+
+		:: eject disk from pyDriveWire
+		pypy ./pyDwCli.py http://localhost:6800 dw disk eject 0
 
 		rem change back to project folder
 		cd "%projectfolder%"
 
-		:: eject disk from DriveWire
-		java -jar e:\DriveWire4\DW4CLI.jar --instance="0" -command="dw disk eject 0"
-
 		echo.
 		rem set /p=Press [ENTER] to continue...
 
 		exit /B
 
 	)
-
-
-
-	rem Coco 3 section
-	echo Coco 3 section for DW4
-
-	if %1 == coco3dw1 (
-
-			:: eject disk from DriveWire
-		java -jar e:\DriveWire4\DW4CLI.jar --instance="0" -command="dw disk eject 0"
-		echo -e
-
-		:: insert disk for DriveWire
-		java -jar e:\DriveWire4\DW4CLI.jar --instance="0" -command="dw disk insert 0 %cd%\%floppy%.DSK"
-		echo -e
-
-		:: show (confirm) disk mounted in DriveWire
-		java -jar e:\DriveWire4\DW4CLI.jar --instance="0" -command="dw disk show 0"
-		echo -e
-
-		rem change to mame folder
-		cd e:\mame
-
-		e:\mame\mame.exe %1 %MAMEPARMS%
-
-		rem change back to project folder
-		cd "%projectfoldfer%"
-
-		:: eject disk from DriveWire
-		java -jar e:\DriveWire4\DW4CLI.jar --instance="0" -command="dw disk eject 0"
-
-		echo.
-		rem set /p=Press [ENTER] to continue...
-
-		exit /B
-
-	)
-
 
 
 	echo.
-	echo Not a valid Coco based driver for DriveWire.  Exiting.
+	echo Not a valid Coco based driver for pyDriveWire.  Exiting.
 	echo.
 
 	exit /B
@@ -266,14 +233,12 @@ if /I "%2" == "Y" (
 ) else (
 
 
-	rem (optional) load MAME and mount the disk image as DRIVE 0
+	rem (optional) load XRoar and mount the disk image as DRIVE 0
 
-	rem Coco 2 and Coco 3 section
+	rem change to XRoar folder
+	cd e:\xroar
 
-	rem change to mame folder
-	cd e:\mame
-
-	e:\mame\mame.exe %1 -inipath e:\mame -rompath e:\mame\roms;e:\media\share1\roms -flop1 "%cd%\%floppy%.DSK" %MAMEPARMS%
+	e:\xroar\xroar.exe -c xroar.conf -default-machine coco2bus -load "%cd%\%floppy%.DSK" %XROARPARMS%
 
 	rem change back to project folder
 	cd "%projectfolder%"

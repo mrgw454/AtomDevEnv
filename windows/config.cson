@@ -2,7 +2,7 @@
   "atom-shell-commands":
     commands: [
       {
-        name: "Build Coco 2 DSK image and launch MAME (DW4)"
+        name: "Build Coco 2 DSK image and launch MAME (pyDW)"
         command: "e:/mame/makeDSK-pyDW.bat"
         arguments: [
           "coco2"
@@ -24,7 +24,29 @@
           keymap: "ctrl-3"
       }
       {
-        name: "Build Coco 3 DSK image and launch MAME (DW4)"
+        name: "Build Coco 2 DSK image and launch XRoar (pyDW)"
+        command: "e:/mame/makeDSK-pyDW-XRoar.bat"
+        arguments: [
+          "coco2"
+          "y"
+        ]
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-4"
+      }
+      {
+        name: "Build Coco 2 DSK image and launch XRoar (local)"
+        command: "e:/mame/makeDSK-pyDW-XRoar.bat"
+        arguments: [
+          "coco2"
+          "n"
+        ]
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-5"
+      }
+      {
+        name: "Build Coco 3 DSK image and launch MAME (pyDW)"
         command: "e:/mame/makeDSK-pyDW.bat"
         arguments: [
           "coco3dw1"
@@ -32,7 +54,7 @@
         ]
         options:
           cwd: "{FileDir}"
-          keymap: "ctrl-4"
+          keymap: "ctrl-6"
       }
       {
         name: "Build Coco 3 DSK image and launch MAME (local)"
@@ -43,7 +65,7 @@
         ]
         options:
           cwd: "{FileDir}"
-          keymap: "ctrl-5"
+          keymap: "ctrl-7"
       }
       {
         name: "Compile assembly program (lwasm)"
@@ -56,7 +78,7 @@
         ]
         options:
           cwd: "{FileDir}"
-          keymap: "ctrl-6"
+          keymap: "ctrl-8"
       }
       {
         name: "Compile assembly program (asm6809)"
@@ -68,7 +90,7 @@
         ]
         options:
           cwd: "{FileDir}"
-          keymap: "ctrl-7"
+          keymap: "ctrl-9"
       }
       {
         name: "Compile C program (CMOC)"
@@ -80,7 +102,7 @@
         ]
         options:
           cwd: "{FileDir}"
-          keymap: "ctrl-8"
+          keymap: "ctrl-0"
       }
       {
         name: "Extract Coco DSK image (DECB)"
@@ -90,6 +112,15 @@
         ]
         options:
           cwd: "{FileDir}"
-          keymap: "ctrl-9"
+          keymap: "ctrl-1"
       }
     ]
+  core:
+    disabledPackages: [
+      "wrap-guide"
+    ]
+    telemetryConsent: "no"
+  "exception-reporting":
+    userId: "ee2c71fe-fcd1-4820-aef7-d461731dcf70"
+  welcome:
+    showOnStartup: false
