@@ -251,7 +251,7 @@ if /I "%2" == "Y" (
 	rem change to XRoar folder
 	cd "%xroardir%"
 
-	"%xroardir%\xroarexe%" -c xroar.conf -default-machine coco2bus -load "%cd%\%floppy%.DSK" %XROARPARMS%
+	"%xroardir%\%xroarexe%" -c xroar.conf -default-machine coco2bus -load "%cd%\%floppy%.DSK" %XROARPARMS%
 	
 	rem change back to project folder
 	cd "%projectfolder%"
