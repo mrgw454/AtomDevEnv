@@ -16,8 +16,21 @@
 :: If pyDriveWire is not running, the script will start it (net start pyDriveWire if configured as a service).
 
 
+:: XRoar's location (path only)
+SET xroardir=e:\xroar
+
+:: XRoar executable (filename only)
+SET xroarexe=xroar.exe
+
+:: Toolshed's DECB utility
+SET decb=C:\Program Files (x86)\toolshed-2.2\decb.exe
+
+:: pyDriveWire location (path only)
+SET pyDWlocation=e:\pyDriveWire
+
+
 :: use parameter file for XRoar (if found)
-for /f "delims=" %%x in (e:\xroar\.optional_xroar_parameters.txt) do set XROARPARMS=%%x
+for /f "delims=" %%x in (%xroardir%\.optional_xroar_parameters.txt) do set XROARPARMS=%%x
 
 
 :: get name of batch file and place it into a variable
@@ -47,7 +60,7 @@ if exist "%floppy%.DSK" (
 echo Creating new floppy disk image [%floppy%.DSK]
 echo.
 
-"C:\Program Files (x86)\toolshed-2.2\decb.exe" dskini "%floppy%.DSK"
+"%decb%" dskini "%floppy%.DSK"
 
 
 for %%f in (*.*) do (
@@ -65,7 +78,7 @@ rem copy all BASIC files (and convert names to UPPERCASE) to DSK image
 		CALL :UpCase String
 
 		echo decb copy -0 -a -t -r %%~nxf "%floppy%.DSK",!String!
-		"C:\Program Files (x86)\toolshed-2.2\decb.exe" copy -0 -a -t -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -0 -a -t -r %%~nxf "%floppy%.DSK",!String!
 		CALL :functionErrorLevel
 
 		ENDLOCAL
@@ -82,7 +95,7 @@ rem copy all BIN files (and convert names to UPPERCASE) to DSK image
 		CALL :UpCase String
 
 		echo decb copy -2 -b -r %%~nxf "%floppy%.DSK",!String!
-		"C:\Program Files (x86)\toolshed-2.2\decb.exe" copy -2 -b -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -2 -b -r %%~nxf "%floppy%.DSK",!String!
 		CALL :functionErrorLevel
 
 		ENDLOCAL
@@ -99,7 +112,7 @@ rem copy all TXT files (and convert names to UPPERCASE) to DSK image
 		CALL :UpCase String
 
 		echo decb copy -3 -a -r %%~nxf "%floppy%.DSK",!String!
-		"C:\Program Files (x86)\toolshed-2.2\decb.exe" copy -3 -a -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -3 -a -r %%~nxf "%floppy%.DSK",!String!
 		CALL :functionErrorLevel
 
 		ENDLOCAL
@@ -116,7 +129,7 @@ rem copy all DAT files (and convert names to UPPERCASE) to DSK image
 		CALL :UpCase String
 
 		echo decb copy -1 -a -r %%~nxf "%floppy%.DSK",!String!
-		"C:\Program Files (x86)\toolshed-2.2\decb.exe" copy -1 -a -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -1 -a -r %%~nxf "%floppy%.DSK",!String!
 		CALL :functionErrorLevel
 
 		ENDLOCAL
@@ -133,7 +146,7 @@ rem copy all ROM files (and convert names to UPPERCASE) to DSK image
 		CALL :UpCase String
 
 		echo decb copy -2 -b -r %%~nxf "%floppy%.DSK",!String!
-		"C:\Program Files (x86)\toolshed-2.2\decb.exe" copy -1 -a -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -1 -a -r %%~nxf "%floppy%.DSK",!String!
 		CALL :functionErrorLevel
 
 		ENDLOCAL
@@ -149,7 +162,7 @@ echo.
 
 :: list disk image contents
 
-"C:\Program Files (x86)\toolshed-2.2\decb.exe" dir "%floppy%.DSK"
+"%decb%" dir "%floppy%.DSK"
 
 echo.
 
@@ -189,7 +202,7 @@ if /I "%2" == "Y" (
 
 	if %1 == coco2 (
 
-		cd e:\pyDriveWire
+		cd "%pyDWlocation%"
 
 			:: eject disk from pyDriveWire
 		pypy ./pyDwCli.py http://localhost:6800 dw disk eject 0
@@ -204,11 +217,11 @@ if /I "%2" == "Y" (
 		echo -e
 
 		rem change to XRoar folder
-		cd e:\xroar
+		cd "%xroardir%"
 
-		e:\xroar\xroar.exe -c xroar.conf -default-machine coco2bus -machine-cart hdbdos %XROARPARMS%
+		"%xroardir%\%xroarexe%" -c xroar.conf -default-machine coco2bus -machine-cart hdbdos %XROARPARMS%
 
-    cd e:\pyDriveWire
+    cd "%pyDWlocation%"
 
 		:: eject disk from pyDriveWire
 		pypy ./pyDwCli.py http://localhost:6800 dw disk eject 0
@@ -236,9 +249,9 @@ if /I "%2" == "Y" (
 	rem (optional) load XRoar and mount the disk image as DRIVE 0
 
 	rem change to XRoar folder
-	cd e:\xroar
+	cd "%xroardir%"
 
-	e:\xroar\xroar.exe -c xroar.conf -default-machine coco2bus -load "%cd%\%floppy%.DSK" %XROARPARMS%
+	"%xroardir%\xroarexe%" -c xroar.conf -default-machine coco2bus -load "%cd%\%floppy%.DSK" %XROARPARMS%
 
 	rem change back to project folder
 	cd "%projectfolder%"
