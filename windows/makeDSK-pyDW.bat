@@ -252,7 +252,7 @@ if /I "%2" == "Y" (
 		echo -e
 
 		:: insert disk for pyDriveWire
-		pypy ./pyDwCli.py http://localhost:6800 dw disk insert 0 %cd%\%floppy%.DSK"
+		pypy ./pyDwCli.py http://localhost:6800 dw disk insert 0 %cd%\%floppy%.DSK
 		echo -e
 
 		:: show (confirm) disk mounted in pyDriveWire
@@ -295,7 +295,7 @@ if /I "%2" == "Y" (
 	rem Coco 2 and Coco 3 section
 
 	rem change to mame folder
-	cd "%mamedir%""
+	cd "%mamedir%"
 
 	"%mamedir%\%mameexe%" %1 -inipath "%mamedir%" -rompath e:\mame\roms;e:\media\share1\roms -flop1 "%cd%\%floppy%.DSK" %MAMEPARMS%
 
