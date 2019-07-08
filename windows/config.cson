@@ -3,7 +3,7 @@
     commands: [
       {
         name: "Build Coco 2 DSK image and launch MAME (pyDW)"
-        command: "e:/mame/makeDSK-pyDW.bat"
+        command: "e:/scripts/makeDSK-pyDW.bat"
         arguments: [
           "coco2"
           "y"
@@ -14,7 +14,7 @@
       }
       {
         name: "Build Coco 2 DSK image and launch MAME (local)"
-        command: "e:/mame/makeDSK-pyDW.bat"
+        command: "e:/scripts/makeDSK-pyDW.bat"
         arguments: [
           "coco2"
           "n"
@@ -25,7 +25,7 @@
       }
       {
         name: "Build Coco 2 DSK image and launch XRoar (pyDW)"
-        command: "e:/mame/makeDSK-pyDW-XRoar.bat"
+        command: "e:/scripts/makeDSK-pyDW-XRoar.bat"
         arguments: [
           "coco2"
           "y"
@@ -36,7 +36,7 @@
       }
       {
         name: "Build Coco 2 DSK image and launch XRoar (local)"
-        command: "e:/mame/makeDSK-pyDW-XRoar.bat"
+        command: "e:/scripts/makeDSK-pyDW-XRoar.bat"
         arguments: [
           "coco2"
           "n"
@@ -47,7 +47,7 @@
       }
       {
         name: "Build Coco 3 DSK image and launch MAME (pyDW)"
-        command: "e:/mame/makeDSK-pyDW.bat"
+        command: "e:/scripts/makeDSK-pyDW.bat"
         arguments: [
           "coco3dw1"
           "y"
@@ -58,7 +58,7 @@
       }
       {
         name: "Build Coco 3 DSK image and launch MAME (local)"
-        command: "e:/mame/makeDSK-pyDW.bat"
+        command: "e:/scripts/makeDSK-pyDW.bat"
         arguments: [
           "coco3"
           "n"
@@ -106,7 +106,7 @@
       }
       {
         name: "Extract Coco DSK image (DECB)"
-        command: "e:/mame/extractDSK.bat"
+        command: "e:/scripts/extractDSK.bat"
         arguments: [
           "{FileName}"
         ]
