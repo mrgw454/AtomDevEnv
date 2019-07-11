@@ -5,6 +5,7 @@
         arguments: [
           "{FileName}"
           "{FileName}"
+          "10"
         ]
         command: "renumBASIC.sh"
         name: "Renumber BASIC program"
