@@ -15,9 +15,23 @@
 :: driver for MAME (with HDBDOS) and use pyDriveWire with this disk image mounted as DRIVE 0.
 :: If pyDriveWire is not running, the script will start it.
 
+:: set up some environment variables
+
+:: MAME's location (path only)
+SET mamedir=e:\mame
+
+:: MAME executable (filename only)
+SET mameexe=mame.exe
+
+:: Toolshed's DECB utility
+SET decb=C:\Program Files (x86)\toolshed-2.2\decb.exe
+
+:: pyDriveWire location (path only)
+SET pyDWlocation=e:\pyDriveWire
+
 
 :: use parameter file for MAME (if found)
-for /f "delims=" %%x in (e:\mame\.optional_mame_parameters.txt) do set MAMEPARMS=%%x
+for /f "delims=" %%x in (%mamedir%\.optional_mame_parameters.txt) do set MAMEPARMS=%%x
 
 
 :: get name of batch file and place it into a variable
@@ -47,7 +61,7 @@ if exist "%floppy%.DSK" (
 echo Creating new floppy disk image [%floppy%.DSK]
 echo.
 
-"C:\Program Files (x86)\toolshed-2.2\decb.exe" dskini "%floppy%.DSK"
+"%decb%" dskini "%floppy%.DSK"
 
 
 for %%f in (*.*) do (
@@ -65,7 +79,7 @@ rem copy all BASIC files (and convert names to UPPERCASE) to DSK image
 		CALL :UpCase String
 
 		echo decb copy -0 -a -t -r %%~nxf "%floppy%.DSK",!String!
-		"C:\Program Files (x86)\toolshed-2.2\decb.exe" copy -0 -a -t -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -0 -a -t -r %%~nxf "%floppy%.DSK",!String!
 		CALL :functionErrorLevel
 
 		ENDLOCAL
@@ -82,7 +96,7 @@ rem copy all BIN files (and convert names to UPPERCASE) to DSK image
 		CALL :UpCase String
 
 		echo decb copy -2 -b -r %%~nxf "%floppy%.DSK",!String!
-		"C:\Program Files (x86)\toolshed-2.2\decb.exe" copy -2 -b -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -2 -b -r %%~nxf "%floppy%.DSK",!String!
 		CALL :functionErrorLevel
 
 		ENDLOCAL
@@ -99,7 +113,7 @@ rem copy all TXT files (and convert names to UPPERCASE) to DSK image
 		CALL :UpCase String
 
 		echo decb copy -3 -a -r %%~nxf "%floppy%.DSK",!String!
-		"C:\Program Files (x86)\toolshed-2.2\decb.exe" copy -3 -a -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -3 -a -r %%~nxf "%floppy%.DSK",!String!
 		CALL :functionErrorLevel
 
 		ENDLOCAL
@@ -116,7 +130,7 @@ rem copy all DAT files (and convert names to UPPERCASE) to DSK image
 		CALL :UpCase String
 
 		echo decb copy -1 -a -r %%~nxf "%floppy%.DSK",!String!
-		"C:\Program Files (x86)\toolshed-2.2\decb.exe" copy -1 -a -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -1 -a -r %%~nxf "%floppy%.DSK",!String!
 		CALL :functionErrorLevel
 
 		ENDLOCAL
@@ -133,7 +147,7 @@ rem copy all ROM files (and convert names to UPPERCASE) to DSK image
 		CALL :UpCase String
 
 		echo decb copy -2 -b -r %%~nxf "%floppy%.DSK",!String!
-		"C:\Program Files (x86)\toolshed-2.2\decb.exe" copy -1 -a -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -1 -a -r %%~nxf "%floppy%.DSK",!String!
 		CALL :functionErrorLevel
 
 		ENDLOCAL
@@ -149,7 +163,7 @@ echo.
 
 :: list disk image contents
 
-"C:\Program Files (x86)\toolshed-2.2\decb.exe" dir "%floppy%.DSK"
+"%decb%" dir "%floppy%.DSK"
 
 echo.
 
@@ -189,7 +203,7 @@ if /I "%2" == "Y" (
 
 	if %1 == coco2 (
 
-		cd e:\pyDriveWire
+		cd "%pyDWlocation%"
 
 			:: eject disk from pyDriveWire
 		pypy ./pyDwCli.py http://localhost:6800 dw disk eject 0
@@ -204,11 +218,11 @@ if /I "%2" == "Y" (
 		echo -e
 
 		rem change to mame folder
-		cd e:\mame
+		cd "%mamedir%"
 
-		e:\mame\mame.exe %1 -cart e:\media\share1\roms\hdbdw3bck.rom -ext fdcv11 %MAMEPARMS%
+		"%mamedir%\%mameexe%" %1 -cart e:\media\share1\roms\hdbdw3bck.rom -ext fdcv11 %MAMEPARMS%
 
-    cd e:\pyDriveWire
+    cd "%pyDWlocation%"
 
 		:: eject disk from pyDriveWire
 		pypy ./pyDwCli.py http://localhost:6800 dw disk eject 0
@@ -231,14 +245,14 @@ if /I "%2" == "Y" (
 
 	if %1 == coco3dw1 (
 
-		cd e:\pyDriveWire
+		cd "%pyDWlocation%"
 
 			:: eject disk from pyDriveWire
 		pypy ./pyDwCli.py http://localhost:6800 dw disk eject 0
 		echo -e
 
 		:: insert disk for pyDriveWire
-		pypy ./pyDwCli.py http://localhost:6800 dw disk insert 0 %cd%\%floppy%.DSK"
+		pypy ./pyDwCli.py http://localhost:6800 dw disk insert 0 %cd%\%floppy%.DSK
 		echo -e
 
 		:: show (confirm) disk mounted in pyDriveWire
@@ -246,11 +260,11 @@ if /I "%2" == "Y" (
 		echo -e
 
 		rem change to mame folder
-		cd e:\mame
+		cd "%mamedir%"
 
-		e:\mame\mame.exe %1 %MAMEPARMS%
+		"%mamedir%\%mameexe%" %1 %MAMEPARMS%
 
-    cd e:\pyDriveWire
+    cd "%pyDWlocation%"
 
     :: eject disk from pyDriveWire
 		pypy ./pyDwCli.py http://localhost:6800 dw disk eject 0
@@ -281,9 +295,9 @@ if /I "%2" == "Y" (
 	rem Coco 2 and Coco 3 section
 
 	rem change to mame folder
-	cd e:\mame
+	cd "%mamedir%"
 
-	e:\mame\mame.exe %1 -inipath e:\mame -rompath e:\mame\roms;e:\media\share1\roms -flop1 "%cd%\%floppy%.DSK" %MAMEPARMS%
+	"%mamedir%\%mameexe%" %1 -inipath "%mamedir%" -rompath e:\mame\roms;e:\media\share1\roms -flop1 "%cd%\%floppy%.DSK" %MAMEPARMS%
 
 	rem change back to project folder
 	cd "%projectfolder%"
