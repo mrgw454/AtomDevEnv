@@ -3,6 +3,17 @@
     commands: [
       {
         arguments: [
+          "{FileName}"
+          "{FileName}"
+        ]
+        command: "renumBASIC.sh"
+        name: "Renumber BASIC program"
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-1"
+      }
+      {
+        arguments: [
           "coco2"
           "y"
         ]
@@ -138,6 +149,9 @@
   editor: {}
   "exception-reporting":
     userId: "ee2c71fe-fcd1-4820-aef7-d461731dcf70"
+  "file-watcher":
+    autoReload: true
+    includeCompareOption: false
   "tree-view":
     alwaysOpenExisting: true
     autoReveal: true
