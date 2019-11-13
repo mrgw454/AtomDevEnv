@@ -127,8 +127,8 @@ rem copy all DAT files (and convert names to UPPERCASE) to DSK image
 		SET String=%%~nxf
 		CALL :UpCase String
 
-		echo decb copy -1 -a -r %%~nxf "%floppy%.DSK",!String!
-		"%decb%" copy -1 -a -r %%~nxf "%floppy%.DSK",!String!
+		echo decb copy -2 -b -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -2 -b -r %%~nxf "%floppy%.DSK",!String!
 		CALL :functionErrorLevel
 
 		ENDLOCAL
@@ -145,12 +145,64 @@ rem copy all ROM files (and convert names to UPPERCASE) to DSK image
 		CALL :UpCase String
 
 		echo decb copy -2 -b -r %%~nxf "%floppy%.DSK",!String!
-		"%decb%" copy -1 -a -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -2 -a -r %%~nxf "%floppy%.DSK",!String!
 		CALL :functionErrorLevel
 
 		ENDLOCAL
 
 	)
+
+
+rem copy all CHR files for CoCoVGA (and convert names to UPPERCASE) to DSK image
+
+	IF /I "%%~xf"==".CHR" (
+
+		SETLOCAL ENABLEDELAYEDEXPANSION
+		SET String=%%~nxf
+		CALL :UpCase String
+
+		echo decb copy -2 -b -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -2 -a -r %%~nxf "%floppy%.DSK",!String!
+		CALL :functionErrorLevel
+
+		ENDLOCAL
+
+	)
+
+
+rem copy all VG6 files for CoCoVGA (and convert names to UPPERCASE) to DSK image
+
+	IF /I "%%~xf"==".VG6" (
+
+		SETLOCAL ENABLEDELAYEDEXPANSION
+		SET String=%%~nxf
+		CALL :UpCase String
+
+		echo decb copy -2 -b -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -2 -a -r %%~nxf "%floppy%.DSK",!String!
+		CALL :functionErrorLevel
+
+		ENDLOCAL
+
+	)
+
+
+rem copy all SCR files for CoCoVGA (and convert names to UPPERCASE) to DSK image
+
+	IF /I "%%~xf"==".SCR" (
+
+		SETLOCAL ENABLEDELAYEDEXPANSION
+		SET String=%%~nxf
+		CALL :UpCase String
+
+		echo decb copy -2 -b -r %%~nxf "%floppy%.DSK",!String!
+		"%decb%" copy -2 -a -r %%~nxf "%floppy%.DSK",!String!
+		CALL :functionErrorLevel
+
+		ENDLOCAL
+
+	)
+
 
 
 )

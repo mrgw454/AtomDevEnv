@@ -123,8 +123,8 @@ for f in *; do
 	# Copy all DAT files (and convert names to UPPERCASE) to DSK image
 	if [[ $f =~ .DAT|.dat ]]; then
 
-		echo -e decb copy -1 -a -r "$f" "$floppy.DSK","${f^^}"
-		decb copy -1 -a -r "$f" "$floppy.DSK","${f^^}"
+		echo -e decb copy -2 -b -r "$f" "$floppy.DSK","${f^^}"
+		decb copy -2 -b -r "$f" "$floppy.DSK","${f^^}"
 		functionErrorLevel
 
 	fi
@@ -138,6 +138,37 @@ for f in *; do
 		functionErrorLevel
 
 	fi
+
+
+	# Copy all CHR files for CoCoVGA (and convert names to UPPERCASE) to DSK image
+	if [[ $f =~ .CHR|.chr ]]; then
+
+		echo -e decb copy -2 -b -r "$f" "$floppy.DSK","${f^^}"
+		decb copy -2 -b -r "$f" "$floppy.DSK","${f^^}"
+		functionErrorLevel
+
+	fi
+
+
+# Copy all VG6 files for CoCoVGA (and convert names to UPPERCASE) to DSK image
+	if [[ $f =~ .VG6|.vg6 ]]; then
+
+		echo -e decb copy -2 -b -r "$f" "$floppy.DSK","${f^^}"
+		decb copy -2 -b -r "$f" "$floppy.DSK","${f^^}"
+		functionErrorLevel
+
+	fi
+
+
+# Copy all SCR files for CoCoVGA (and convert names to UPPERCASE) to DSK image
+	if [[ $f =~ .SCR|.scr ]]; then
+
+		echo -e decb copy -2 -b -r "$f" "$floppy.DSK","${f^^}"
+		decb copy -2 -b -r "$f" "$floppy.DSK","${f^^}"
+		functionErrorLevel
+
+	fi
+
 
 done
 
