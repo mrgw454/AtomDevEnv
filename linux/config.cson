@@ -126,16 +126,6 @@
           cwd: "{FileDir}"
           keymap: "ctrl-9"
       }
-      {
-        arguments: [
-          "{FileName}"
-        ]
-        command: "extractDSK-tokenized.sh"
-        name: "Extract Coco DSK image (DECB) - Tokenized"
-        options:
-          cwd: "{FileDir}"
-          keymap: "ctrl-9"
-      }
     ]
   core:
     disabledPackages: [
