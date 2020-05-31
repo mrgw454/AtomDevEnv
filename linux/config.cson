@@ -127,13 +127,3 @@
           keymap: "ctrl-9"
       }
     ]
-  core:
-    disabledPackages: [
-      "wrap-guide"
-    ]
-    restorePreviousWindowsOnStart: "no"
-    telemetryConsent: "no"
-    themes: [
-      "predawn-ui"
-      "predawn-syntax"
-    ] 
