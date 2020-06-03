@@ -1,0 +1,150 @@
+"*":
+  "atom-shell-commands":
+    commands: [
+      {
+        arguments: [
+          "{FileName}"
+          "{FileName}"
+          "10"
+        ]
+        command: "renumBASIC.sh"
+        name: "Renumber BASIC program"
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-1"
+      }
+      {
+        arguments: [
+          "coco2"
+          "y"
+        ]
+        command: "makeDSK.sh"
+        name: "Build Coco 2 DSK image and launch MAME (pyDW)"
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-2"
+      }
+      {
+        arguments: [
+          "coco2"
+          "n"
+        ]
+        command: "makeDSK.sh"
+        name: "Build Coco 2 DSK image and launch MAME (local)"
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-3"
+      }
+      {
+        arguments: [
+          "coco2bus"
+          "y"
+        ]
+        command: "makeDSK-XRoar.sh"
+        name: "Build Coco 2 DSK image and launch XRoar (pyDW)"
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-2"
+      }
+      {
+        arguments: [
+          "coco2bus"
+          "n"
+        ]
+        command: "makeDSK-XRoar.sh"
+        name: "Build Coco 2 DSK image and launch XRoar (local)"
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-3"
+      }
+      {
+        arguments: [
+          "coco3dw1"
+          "y"
+        ]
+        command: "makeDSK.sh"
+        name: "Build Coco 3 DSK image and launch MAME (pyDW)"
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-4"
+      }
+      {
+        arguments: [
+          "coco3"
+          "n"
+        ]
+        command: "makeDSK.sh"
+        name: "Build Coco 3 DSK image and launch MAME (local)"
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-5"
+      }
+      {
+        arguments: [
+          "--6809"
+          "--decb"
+          "--output={FileDir}/{FileNameNoExt}.bin"
+          "{FileDir}/{FileName}"
+        ]
+        command: "/usr/bin/lwasm"
+        name: "Compile assembly program (lwasm)"
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-6"
+      }
+      {
+        arguments: [
+          "--coco"
+          "--output={FileDir}/{FileNameNoExt}.bin"
+          "{FileDir}/{FileName}"
+        ]
+        command: "/usr/bin/asm6809"
+        name: "Compile assembly program (asm6809)"
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-7"
+      }
+      {
+        arguments: [
+          "-o"
+          "{FileDir}/{FileNameNoExt}.bin"
+          "{FileDir}/{FileName}"
+        ]
+        command: "/usr/bin/cmoc"
+        name: "Compile C program (CMOC)"
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-8"
+      }
+      {
+        arguments: [
+          "{FileName}"
+        ]
+        command: "extractDSK.sh"
+        name: "Extract Coco DSK image (DECB)"
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-9"
+      }
+    ]
+  core:
+    disabledPackages: [
+      "wrap-guide"
+    ]
+    restorePreviousWindowsOnStart: "no"
+    telemetryConsent: "no"
+    themes: [
+      "predawn-ui"
+      "predawn-syntax"
+    ]
+  editor: {}
+  "exception-reporting":
+    userId: "ee2c71fe-fcd1-4820-aef7-d461731dcf70"
+  "file-watcher":
+    autoReload: true
+    includeCompareOption: false
+  "tree-view":
+    alwaysOpenExisting: true
+    autoReveal: true
+  welcome:
+    showOnStartup: false
