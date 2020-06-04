@@ -18,6 +18,9 @@ https://www.mamedev.org/
 XRoar emulator:
 https://www.6809.org.uk/xroar/
 
+Motorola 6809 dev tools:
+https://launchpad.net/~tormodvolden/+archive/ubuntu/m6809
+
 If you wish to do C development, you will need CMOC:
 https://perso.b2b2c.ca/~sarrazip/dev/cmoc.html
 
