@@ -2,6 +2,18 @@
   "atom-shell-commands":
     commands: [
       {
+        name: "Renumber BASIC program"
+        command: "e:/scripts/renumBASIC.bat"
+        arguments: [
+          "{FileName}"
+          "{FileName}"
+          "10"
+        ]
+        options:
+          cwd: "{FileDir}"
+          keymap: "ctrl-1"
+      }
+      {
         name: "Build Coco 2 DSK image and launch MAME (pyDW)"
         command: "e:/scripts/makeDSK-pyDW.bat"
         arguments: [
@@ -14,7 +26,7 @@
       }
       {
         name: "Build Coco 2 DSK image and launch MAME (local)"
-        command: "e:/scripts/makeDSK-pyDW.bat"
+        command: "e:/scripts/makeDSK.bat"
         arguments: [
           "coco2"
           "n"
@@ -58,7 +70,7 @@
       }
       {
         name: "Build Coco 3 DSK image and launch MAME (local)"
-        command: "e:/scripts/makeDSK-pyDW.bat"
+        command: "e:/scripts/makeDSK.bat"
         arguments: [
           "coco3"
           "n"
