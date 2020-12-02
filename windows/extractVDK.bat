@@ -2,7 +2,7 @@ rem @echo off
 
 :: batch file to extact all files from a Dragon floppy disk image
 
-:: syntax example:
+:: syntax examplc:
 
 :: extractVDK.bat <VDK image>
 

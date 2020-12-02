@@ -6,7 +6,7 @@
 :: this script can take up to 2 command line parameters:
 :: Coco driver to use for XRoar (i.e. coco2 coco2b, etc.) and use pyDriveWire (yes or no)
 
-:: syntax example:
+:: syntax examplc:
 
 :: makeDSK.bat coco2 y
 
@@ -28,6 +28,18 @@ SET decb=C:\Program Files (x86)\toolshed-2.2\decb.exe
 :: pyDriveWire location (path only)
 SET pyDWlocation=e:\pyDriveWire
 
+:: date / time
+set CUR_YYYY=%date:~10,4%
+set CUR_MM=%date:~4,2%
+set CUR_DD=%date:~7,2%
+set CUR_HH=%time:~0,2%
+if %CUR_HH% lss 10 (set CUR_HH=0%time:~1,1%)
+
+set CUR_NN=%time:~3,2%
+set CUR_SS=%time:~6,2%
+set CUR_MS=%time:~9,2%
+
+set SUBFILENAME=%CUR_YYYY%%CUR_MM%%CUR_DD%-%CUR_HH%%CUR_NN%%CUR_SS%
 
 :: use parameter file for XRoar (if found)
 for /f "delims=" %%x in (%xroardir%\.optional_xroar_parameters.txt) do set XROARPARMS=%%x
@@ -47,13 +59,15 @@ for %%a in (.) do set floppy=%%~nxa
 SET projectfolder=%cd%
 echo projectfolder %projectfolder%
 
-:: if a previous disk image exists, remove it before creating a new one
+:: if a previous disk image exists, make a backup before creating a new one
 
 if exist "%floppy%.DSK" (
-
-	erase "%floppy%.DSK"
+echo Backup folder: %SUBFILENAME%
 	echo.
-)
+	mkdir %SUBFILENAME%
+	move "%floppy%.DSK" %SUBFILENAME%
+	echo.
+)	
 
 :: create new DSK image based on current folder name
 
@@ -215,18 +229,6 @@ echo.
 
 "%decb%" dir "%floppy%.DSK"
 
-echo.
-
-
-:: copy to /media/share1/DW4 so the disk image can be sync'd to other DriveWire servers
-
-echo Copying file to [e:\media\share1\DW4\%floppy%\%floppy%.DSK] so it can be sync'd to other DriveWire servers...
-echo.
-
-mkdir "e:\media\share1\DW4\%floppy%"
-copy "%floppy%.DSK" "e:\media\share1\DW4\%floppy%"
-
-echo.
 echo.
 
 :: if no command line parameters, only make disk image and exit

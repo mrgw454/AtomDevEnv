@@ -1,6 +1,6 @@
 :: batch file to extract all files from a Coco floppy disk image
 
-:: syntax example:
+:: syntax examplc:
 
 :: extractDSK.bat <DSK image>
 
@@ -10,7 +10,7 @@
 if "%~1"=="" (
     echo No valid disk image provided.
 		echo.
-		echo syntax example:
+		echo syntax examplc:
 		echo.
 		echo "extractDSK.bat <DSK image>"
 	  echo.

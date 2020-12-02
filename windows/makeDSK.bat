@@ -6,7 +6,7 @@
 :: this script can take up to 2 command line parameters:
 :: Coco driver to use for MAME (i.e. coco2 coco3, etc.) and use DriveWire (yes or no)
 
-:: syntax example:
+:: syntax examplc:
 
 :: makeDSK.bat coco2 y
 
@@ -28,6 +28,18 @@ SET decb=C:\Program Files (x86)\toolshed-2.2\decb.exe
 :: DriveWire location (path only)
 SET DWlocation=e:\DriveWire4
 
+:: date / time
+set CUR_YYYY=%date:~10,4%
+set CUR_MM=%date:~4,2%
+set CUR_DD=%date:~7,2%
+set CUR_HH=%time:~0,2%
+if %CUR_HH% lss 10 (set CUR_HH=0%time:~1,1%)
+
+set CUR_NN=%time:~3,2%
+set CUR_SS=%time:~6,2%
+set CUR_MS=%time:~9,2%
+
+set SUBFILENAME=%CUR_YYYY%%CUR_MM%%CUR_DD%-%CUR_HH%%CUR_NN%%CUR_SS%
 
 :: use parameter file for MAME (if found)
 for /f "delims=" %%x in (%mamedir%\.optional_mame_parameters.txt) do set MAMEPARMS=%%x
@@ -50,7 +62,10 @@ echo projectfolder %projectfolder%
 
 if exist "%floppy%.DSK" (
 
-	erase "%floppy%.DSK"
+	echo Backup folder: %SUBFILENAME%
+	echo.
+	mkdir %SUBFILENAME%
+	move "%floppy%.DSK" %SUBFILENAME%
 	echo.
 )
 
@@ -217,18 +232,6 @@ echo.
 
 echo.
 
-
-:: copy to /media/share1/DW4 so the disk image can be sync'd to other DriveWire servers
-
-echo Copying file to [e:\media\share1\DW4\%floppy%\%floppy%.DSK] so it can be sync'd to other DriveWire servers...
-echo.
-
-mkdir "e:\media\share1\DW4\%floppy%"
-copy "%floppy%.DSK" "e:\media\share1\DW4\%floppy%"
-
-echo.
-echo.
-
 :: if no command line parameters, only make disk image and exit
 
 if "%~1"=="" (
@@ -254,7 +257,7 @@ if /I "%2" == "Y" (
 	if %1 == coco2 (
 
 			:: eject disk from DriveWire
-		java -jar e:\DriveWire4\DW4CLI.jar --instance="0" -command="dw disk eject 0"
+		java -jar c:\DriveWire4\DW4CLI.jar --instance="0" -command="dw disk eject 0"
 		echo -e
 
 		:: insert disk for DriveWire
@@ -268,7 +271,7 @@ if /I "%2" == "Y" (
 		rem change to mame folder
 		cd "%mamedir%"
 
-		"%mamedir%\%mameexe%" %1 -cart e:\media\share1\roms\hdbdw3bck.rom -ext fdcv11 %MAMEPARMS%
+		"%mamedir%\%mameexe%" %1 -cart c:\media\share1\roms\hdbdw3bck.rom -ext fdcv11 %MAMEPARMS%
 
 		rem change back to project folder
 		cd "%projectfolder%"
@@ -338,7 +341,7 @@ if /I "%2" == "Y" (
 	rem change to mame folder
 	cd "%mamedir%"
 
-	"%mamedir%\%mameexe%" %1 -inipath e:\mame -rompath e:\mame\roms;e:\media\share1\roms -flop1 "%cd%\%floppy%.DSK" %MAMEPARMS%
+	"%mamedir%\%mameexe%" %1 -inipath c:\mame -rompath c:\mame\roms;c:\media\share1\roms -flop1 "%cd%\%floppy%.DSK" %MAMEPARMS%
 
 	rem change back to project folder
 	cd "%projectfolder%"
